@@ -1,14 +1,13 @@
 import {User} from './user'
 
-const testDict :User= {
-    firstname: "farzad", 
-    lastname:"golzari",
-    email:"farzad@gmail.com",
-    password:"farzad18"
+interface params{
+    firstname:string,
+    lastname: string,
+    email: string,
+    password:string
 }
-
 export class UserService{
-    public userLogin():User{
-        return testDict
+    public userLogin(params: params):User{
+        return new User(params.firstname, params.lastname,params.email,params.password)
     }
 }
