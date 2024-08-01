@@ -1,0 +1,16 @@
+Unterschied zwischen den unteren Befehlen : 
+1-yarn add tsoa express
+2-yarn add -D typescript @types/node @types/express
+
+--> 
+1. yarn add tsoa express
+Dieser Befehl installiert die Laufzeitabhängigkeiten, die zur Ausführung deiner Anwendung benötigt werden.
+
+tsoa: Dies ist ein OpenAPI-Tool, das dir hilft, TypeScript-Anwendungen zu erstellen und zu dokumentieren. Es generiert OpenAPI-Spezifikationen (Swagger) und die entsprechenden Routen für Express basierend auf deinen TypeScript-Definitionen.
+express: Dies ist ein minimalistisches Web-Framework für Node.js, das dir hilft, Webanwendungen und APIs zu erstellen. Es bietet eine Reihe von Features für die Web- und Mobilanwendungsentwicklung.
+2. yarn add -D typescript @types/node @types/express
+Dieser Befehl installiert die Entwicklungsabhängigkeiten, die nur während der Entwicklung und nicht zur Laufzeit benötigt werden.
+
+typescript: Dies ist der TypeScript-Compiler. TypeScript ist eine strikt typisierte Obermenge von JavaScript, die dir dabei hilft, robusteren und wartbareren Code zu schreiben. Der Compiler wandelt TypeScript-Code in JavaScript um.
+@types/node: Dies sind die TypeScript-Typdefinitionen für Node.js. Sie stellen die Typinformationen für die Node.js-APIs zur Verfügung, sodass TypeScript den Code korrekt verstehen und überprüfen kann.
+@types/express: Dies sind die TypeScript-Typdefinitionen für Express. Sie bieten Typinformationen für die Express-Module und -Klassen, sodass du mit TypeScript Typüberprüfungen und -vorschläge für Express-Methoden und -Objekte erhältst.
