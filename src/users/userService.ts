@@ -7,7 +7,7 @@ interface params{
     password:string
 }
 export class UserService{
-    public userLogin(params: params):User{
-        return new User(params.firstname, params.lastname,params.email,params.password)
+    public userLogin(userParams:params):User{
+        return new User(userParams.firstname, userParams.lastname, userParams.email,userParams.password)
     }
 }

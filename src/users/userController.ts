@@ -12,20 +12,19 @@ import {
 
   import {UserService} from './userService'
 
-  interface UserParams {
-    firstname: string;
-    lastname: string;
-    email:string
-    password: string;
-  }
+interface params{
+  firstname:string,
+  lastname:string,
+  email:string,
+  password:string
+}
   
   @Route("users")
   export class UsersController extends Controller {
-    @Get("/{params}")
+    @Post("/{userParams}")
     public async getUser(
-      @Path() params: string
+      @Body() userParams: params
     ): Promise<User> {
-      const { firstname, lastname,email, password }: UserParams = JSON.parse(decodeURIComponent(params));
-      return new UserService().userLogin({ firstname, lastname, email, password });
+      return new UserService().userLogin(userParams);
     }
   }

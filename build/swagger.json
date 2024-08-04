@@ -30,6 +30,30 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"params": {
+				"properties": {
+					"firstname": {
+						"type": "string"
+					},
+					"lastname": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstname",
+					"lastname",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -40,8 +64,8 @@
 		"contact": {}
 	},
 	"paths": {
-		"/users/{params}": {
-			"get": {
+		"/users/{userParams}": {
+			"post": {
 				"operationId": "GetUser",
 				"responses": {
 					"200": {
@@ -56,16 +80,17 @@
 					}
 				},
 				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "params",
-						"required": true,
-						"schema": {
-							"type": "string"
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/params"
+							}
 						}
 					}
-				]
+				}
 			}
 		}
 	},
