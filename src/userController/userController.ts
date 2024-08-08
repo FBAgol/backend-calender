@@ -29,10 +29,12 @@ interface params{
     public async getUser(
       @Body() userParams: params,
       @Res() notFoundResponse: TsoaResponse<404, { reason: string }>
-    ): Promise<User> {
-      if (!userParams) {
-        return notFoundResponse(404, { reason: "We don't know you yet. Please provide a name" });
-      }
-      return new UserService().userLogin(userParams);
+    ): Promise<void | string> {
+
+      try {
+        return await new UserService().userLogin(userParams);
+    } catch (error) {
+         notFoundResponse
+    }
     }
   }

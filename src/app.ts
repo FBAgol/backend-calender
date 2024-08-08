@@ -1,5 +1,3 @@
-// src/app.ts
-//import express, {json, urlencoded} from "express";
 import express, { Response as ExResponse, Request as ExRequest, json, urlencoded } from "express";
 import swaggerUi from "swagger-ui-express";
 import { RegisterRoutes } from "../build/routes";
