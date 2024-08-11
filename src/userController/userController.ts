@@ -10,10 +10,12 @@ import {
     TsoaResponse,
     Route,
     SuccessResponse,
+    Tags,
   } from "tsoa";
-  import {User} from '../users/user'
-
+  
   import {UserService} from '../userService/userService'
+  import { createToken } from "../createJWT";
+import { tokenToString } from "typescript";
 
 interface params{
   firstname:string,
@@ -21,20 +23,22 @@ interface params{
   email:string,
   password:string
 }
-  
+
   @Route("users")
   export class UsersController extends Controller {
     @SuccessResponse("201", "Created") 
-    @Post("/{userParams}")
-    public async getUser(
+    @Tags("User")
+    @Post("/")
+    public async createUser(
       @Body() userParams: params,
-      @Res() notFoundResponse: TsoaResponse<404, { reason: string }>
     ): Promise<void | string> {
 
       try {
-        return await new UserService().userLogin(userParams);
+        await new UserService().userLogin(userParams);
+        return createToken(userParams.email, "user")
     } catch (error) {
-         notFoundResponse
+         console.log(error)
+         throw error;
     }
     }
   }

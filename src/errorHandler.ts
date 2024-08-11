@@ -1,6 +1,7 @@
 import{ Response as ExResponse, Request as ExRequest, NextFunction } from "express";
 import { ValidateError } from "tsoa";
 
+
 export function errorHandler(
     err: unknown,
     req: ExRequest,
@@ -13,6 +14,14 @@ export function errorHandler(
       return res.status(422).json({
         message: "Validation Failed",
         details: err?.fields,
+      });
+    }
+
+    if (err instanceof Error && (err as any).code === 'ER_DUP_ENTRY') {
+      console.error(`Duplicate Entry Error on ${req.path}:`, (err as any).fields);
+      return res.status(409).json({
+        message: "Duplicate Entry",
+        details: (err as any).fields,
       });
     }
     if (err instanceof Error) {

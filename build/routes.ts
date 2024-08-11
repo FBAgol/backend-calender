@@ -39,14 +39,13 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        app.post('/users/:userParams',
+        app.post('/users',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
-            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUser)),
+            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.createUser)),
 
-            async function UsersController_getUser(request: ExRequest, response: ExResponse, next: any) {
+            async function UsersController_createUser(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     userParams: {"in":"body","name":"userParams","required":true,"ref":"params"},
-                    notFoundResponse: {"in":"res","name":"404","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"reason":{"dataType":"string","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -58,7 +57,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new UsersController();
 
               await templateService.apiHandler({
-                methodName: 'getUser',
+                methodName: 'createUser',
                 controller,
                 response,
                 next,

@@ -1,6 +1,6 @@
-import {User} from '../users/user'
 import { db } from '../db/db_connection';
 import bcrypt from 'bcrypt';
+
 interface params{
     firstname:string,
     lastname: string,
@@ -9,15 +9,16 @@ interface params{
 }
 const saltRounds = 10;
 export class UserService{
-    public async userLogin(userParams:params):Promise<void>{
+    public async userLogin(userParams:params):Promise<void | string>{
         const hashedPassword = await bcrypt.hash(userParams.password, saltRounds);
         const query= `
         INSERT INTO User(firstname, lastname, email, password) VALUES(?,?,?,?)`
         try{
             await db.query(query,[userParams.firstname, userParams.lastname, userParams.email, hashedPassword])
 
-        }catch(err){
+        }catch(err:any){
             console.log('Database query Error: ',err)
+            throw err; 
 
         }  
     }

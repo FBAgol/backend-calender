@@ -32,7 +32,25 @@
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "access_token",
+				"in": "query"
+			},
+			"tsoa_auth": {
+				"type": "oauth2",
+				"flows": {
+					"implicit": {
+						"authorizationUrl": "http://swagger.io/api/oauth/dialog",
+						"scopes": {
+							"write:pets": "modify things",
+							"read:pets": "read things"
+						}
+					}
+				}
+			}
+		}
 	},
 	"info": {
 		"title": "starter",
@@ -40,9 +58,9 @@
 		"contact": {}
 	},
 	"paths": {
-		"/users/{userParams}": {
+		"/users": {
 			"post": {
-				"operationId": "GetUser",
+				"operationId": "CreateUser",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -58,26 +76,11 @@
 								}
 							}
 						}
-					},
-					"404": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"reason": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"reason"
-									],
-									"type": "object"
-								}
-							}
-						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
