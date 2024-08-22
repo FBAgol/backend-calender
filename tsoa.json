@@ -23,6 +23,7 @@
       }
     },
     "routes": {
-      "routesDir": "build"
+      "routesDir": "build",
+      "authenticationModule": "./authentication.ts"
     }
   }

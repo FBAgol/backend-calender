@@ -7,11 +7,7 @@ dotenv.config();
 
 const port = process.env.PORT;
 const startServer = async () => {
-
-  console.log('Connecting to the database...');
   await connectDB();
-  
-  console.log('Creating tables...');
   await createTables();
 
   app.listen(port, () => {
@@ -19,4 +15,6 @@ const startServer = async () => {
   });
 };
 
+
 startServer();
+

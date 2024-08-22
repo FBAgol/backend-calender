@@ -14,3 +14,16 @@ Dieser Befehl installiert die Entwicklungsabhängigkeiten, die nur während der 
 typescript: Dies ist der TypeScript-Compiler. TypeScript ist eine strikt typisierte Obermenge von JavaScript, die dir dabei hilft, robusteren und wartbareren Code zu schreiben. Der Compiler wandelt TypeScript-Code in JavaScript um.
 @types/node: Dies sind die TypeScript-Typdefinitionen für Node.js. Sie stellen die Typinformationen für die Node.js-APIs zur Verfügung, sodass TypeScript den Code korrekt verstehen und überprüfen kann.
 @types/express: Dies sind die TypeScript-Typdefinitionen für Express. Sie bieten Typinformationen für die Express-Module und -Klassen, sodass du mit TypeScript Typüberprüfungen und -vorschläge für Express-Methoden und -Objekte erhältst.
+
+
+
+
+Todos: 
+
+1- token --> 
+2- tpyeorm 
+3- rolle 
+4- singUp and singin Error style 
+5- clander style 
+6- todo funktion 
+7- pdf 

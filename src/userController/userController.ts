@@ -11,11 +11,12 @@ import {
     Route,
     SuccessResponse,
     Tags,
+    Security,
+    Request,
   } from "tsoa";
   
-  import {UserService} from '../userService/userService'
+  import {UserService, getAllUsers,userAuthentication} from '../userService/userService'
   import { createToken } from "../createJWT";
-import { tokenToString } from "typescript";
 
 interface params{
   firstname:string,
@@ -24,10 +25,10 @@ interface params{
   password:string
 }
 
-  @Route("users")
+  @Route("user")
   export class UsersController extends Controller {
     @SuccessResponse("201", "Created") 
-    @Tags("User")
+    @Tags("Post-User")
     @Post("/")
     public async createUser(
       @Body() userParams: params,
@@ -42,3 +43,36 @@ interface params{
     }
     }
   }
+
+  interface UsersResponseModel {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password:string;
+  }
+
+
+  @Route("secure")
+export class SecureController extends Controller {
+    @Security("jwt", ["user"])
+    @Tags("Get-User")
+    @Get("getAllUsers")
+    public async userInfo(): Promise<UsersResponseModel[]> {
+      const users= await new getAllUsers().getUsers()
+        return users ;
+    }
+}
+
+interface UserResponseModel {
+  email: string;
+  password:string;
+}
+@Route("/user")
+export class getUser extends Controller { 
+    @Tags("User")
+    @Post("login")
+    public async userLogin( @Body() user:UserResponseModel): Promise<Boolean> {
+      const res= await new userAuthentication().getUser(user)
+        return res ;
+    }
+}

@@ -8,7 +8,7 @@ export function createToken(param: string, role: string){
                 param: param,
                 roles: [role],
             },
-            secretKey,
+            process.env.JWT_SECRET as string,
             {
                 expiresIn: "1h",
             }

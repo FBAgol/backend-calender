@@ -17,18 +17,23 @@ export function errorHandler(
       });
     }
 
-    if (err instanceof Error && (err as any).code === 'ER_DUP_ENTRY') {
-      console.error(`Duplicate Entry Error on ${req.path}:`, (err as any).fields);
-      return res.status(409).json({
-        message: "Duplicate Entry",
-        details: (err as any).fields,
-      });
-    }
+   
     if (err instanceof Error) {
       return res.status(500).json({
         message: "Internal Server Error",
       });
     }
   
-    next();
+    next(err)
   };
+
+  export function duplicateEntryHandler(err: any, req: ExRequest, res: ExResponse, next: NextFunction): ExResponse | void {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({
+        code: 'ER_DUP_ENTRY',
+        message: 'User already exists',
+        fields: err.fields
+      });
+    }
+    next(err);
+  }

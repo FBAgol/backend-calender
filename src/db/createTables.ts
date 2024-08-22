@@ -14,6 +14,6 @@ export const createTables= async()=> {
 
   await db.query(userTableQuery, (err: string, result:string) => {
     if (err) throw err;
-    console.log('User table created');
+    console.log('Created tables');
   });
 }
