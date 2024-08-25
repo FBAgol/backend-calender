@@ -31,8 +31,12 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"UsersResponseModel": {
+			"User": {
 				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
 					"firstname": {
 						"type": "string"
 					},
@@ -47,6 +51,7 @@
 					}
 				},
 				"required": [
+					"id",
 					"firstname",
 					"lastname",
 					"email",
@@ -57,6 +62,21 @@
 			},
 			"Boolean": {
 				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"checkUserExists": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"isUser": {
+						"$ref": "#/components/schemas/Boolean"
+					}
+				},
+				"required": [
+					"isUser"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -140,7 +160,7 @@
 				}
 			}
 		},
-		"/secure/getAllUsers": {
+		"/secure/getUsers": {
 			"get": {
 				"operationId": "UserInfo",
 				"responses": {
@@ -150,7 +170,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/UsersResponseModel"
+										"$ref": "#/components/schemas/User"
 									},
 									"type": "array"
 								}
@@ -161,13 +181,7 @@
 				"tags": [
 					"Get-User"
 				],
-				"security": [
-					{
-						"jwt": [
-							"user"
-						]
-					}
-				],
+				"security": [],
 				"parameters": []
 			}
 		},
@@ -180,7 +194,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Boolean"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/checkUserExists"
+										},
+										{
+											"type": "string"
+										}
+									]
 								}
 							}
 						}

@@ -1,6 +1,9 @@
-import { db } from '../db/db_connection';
-import bcrypt from 'bcrypt';
 
+import bcrypt from 'bcrypt';
+import { User } from '../db/userTable';
+import db from '../db/db-connection'
+import { createToken } from '../createJWT';
+import { Repository } from 'typeorm';
 
 interface params{
     firstname:string,
@@ -10,61 +13,36 @@ interface params{
 }
 const saltRounds = 10;
 export class UserService {
-    public async userLogin(userParams: params): Promise<void> {
-      return new Promise<void>(async (resolve, reject) => {
-        try {
-          // Passwort hashen
-          const hashedPassword = await bcrypt.hash(userParams.password, 10);
-  
-          const query = 'INSERT INTO User(firstname, lastname, email, password) VALUES(?, ?, ?, ?)';
-          db.query(query, [userParams.firstname, userParams.lastname, userParams.email, hashedPassword], (error:any, results:any) => {
-            if (error) {
-              if (error.code === 'ER_DUP_ENTRY') {
-                // Falls ein Duplikatfehler auftritt, wird der Fehler hier abgefangen und mit spezifischen Daten weitergeleitet
-                return reject({
-                  code: 'ER_DUP_ENTRY',
-                  message: 'Duplicate entry detected',
-                  fields: { email: userParams.email }
-                });
-              }
-              // Andere Fehler werden ebenfalls weitergeleitet
-              return reject(error);
-            }
-            resolve();
-          });
-        } catch (hashError) {
-          // Fehler beim Hashen des Passworts abfangen
-          return reject(hashError);
-        }
-      });
+    public async userLogin(userParams: params): Promise<string | undefined> {
+      const hashedPassword = await bcrypt.hash(userParams.password, saltRounds);
+      const user = new User()
+      user.firstname=userParams.firstname
+      user.lastname=userParams.lastname
+      user.email=userParams.email
+      user.password=hashedPassword
+
+      await db.manager.save(user)
+      return createToken(userParams.email, "user")
     }
   }
 
 
 
-interface UsersResponseModel {
-    firstname: string;
-    lastname: string;
-    email: string;
-    password:string;
-  }
 
+export class getUsers {
+    public async getAllUsers(): Promise<User[]> {
+      try{
+        const userRepository= db.getRepository(User)
+        const users = await userRepository.find()
+       //const users=await db.manager.find(User)
+        console.log("Users fetched successfully");
+        return users
 
-
-export class getAllUsers {
-    public async getUsers(): Promise<UsersResponseModel[]> {
-        const query = `
-        SELECT * FROM User`;
-        return new Promise((resolve, reject) => {
-            db.query(query, (err: any, results:any) => {
-                if (err) {
-                    console.log('Database query Error: ', err);
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });  
+      }catch(error:any){
+        console.log(error)
+        throw new Error("Error in getting all users:", error);
+      }
+        
     }
 }
 
@@ -76,26 +54,21 @@ interface UserResponseModel {
 
 export class userAuthentication {
   public async getUser(user:UserResponseModel): Promise<Boolean> {
-      const query = `
-      SELECT email, password FROM User WHERE email=?`;
-      return new Promise((resolve, reject) => {
-          db.query(query,[user.email],async (err: any, results:any) => {
-              if (err) {
-                  console.log('Database query Error: ', err);
-                  reject(err);
-              } else {
-                if (results.length > 0) {
-                  const hashedPassword = results[0].password;
-                  const isMatch = await bcrypt.compare(user.password, hashedPassword);
-                  resolve(isMatch);
-              } else {
-                  resolve(false); 
-              }
-                
-                  
-              }
-          });
-      });  
+
+    try{
+      const userRepository= db.getRepository(User)
+      const userExists = await userRepository.findOneBy({email:user.email})
+      //console.log(userExists)
+      if(userExists){
+        const isMatch = await bcrypt.compare(user.password, userExists.password);
+        return isMatch
+      }
+      return false
+    }
+    catch(error:any){
+      console.log(error)
+      throw new Error("Error in getting user:", error);
+    }
   }
 }
 
@@ -125,5 +98,6 @@ export class UpdateUser {
         });  
     }
 }
-*/
 
+
+*/
