@@ -83,7 +83,7 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        app.post('/user',
+        app.post('/user/register',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.createUser)),
 

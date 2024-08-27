@@ -20,7 +20,8 @@ typescript: Dies ist der TypeScript-Compiler. TypeScript ist eine strikt typisie
 
 Todos: 
 
-1- lokal storage token
+1- lokal storage token --> erledigt 
+2- componenten url
 3- rolle 
 4- singUp and singin Error style 
 5- clander style 

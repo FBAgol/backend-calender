@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-const secretKey = "secret";
 
 export function createToken(param: string, role: string){
     if(role==="user"){

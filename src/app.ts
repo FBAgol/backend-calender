@@ -25,5 +25,4 @@ app.use(json());
 
 RegisterRoutes(app);
 
-app.use(errorHandler)
-app.use(duplicateEntryHandler)
+app.use(errorHandler).use(duplicateEntryHandler);

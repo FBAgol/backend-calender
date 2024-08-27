@@ -2,8 +2,6 @@
 import bcrypt from 'bcrypt';
 import { User } from '../db/userTable';
 import db from '../db/db-connection'
-import { createToken } from '../createJWT';
-import { Repository } from 'typeorm';
 
 interface params{
     firstname:string,
@@ -13,7 +11,7 @@ interface params{
 }
 const saltRounds = 10;
 export class UserService {
-    public async userLogin(userParams: params): Promise<string | undefined> {
+    public async userRegister(userParams: params): Promise<void> {
       const hashedPassword = await bcrypt.hash(userParams.password, saltRounds);
       const user = new User()
       user.firstname=userParams.firstname
@@ -21,10 +19,49 @@ export class UserService {
       user.email=userParams.email
       user.password=hashedPassword
 
-      await db.manager.save(user)
-      return createToken(userParams.email, "user")
+      try{
+        await db.manager.save(user)
+
+      }catch(error:any){
+        console.log("Database query Error:",error)
+        throw error
+      
     }
   }
+}
+
+interface UserResponseModel {
+  email: string;
+  password:string;
+}
+
+
+export class userAuthentication {
+  public async getLogIn(user:UserResponseModel): Promise<Boolean> {
+
+    try{
+      const userRepository= db.getRepository(User)
+      const userExists = await userRepository.findOneBy({email:user.email})
+      //console.log(userExists)
+      if(userExists){
+        const isMatch = await bcrypt.compare(user.password, userExists.password);
+        if(isMatch){
+          return isMatch
+
+        }else{
+          return false
+        }    
+      }else{  
+        return false
+      }
+    }
+    catch(error:any){
+      console.log("Service Error",error)
+      throw new Error("Error in getting user:", error);
+    }
+  }
+}
+
 
 
 
@@ -46,31 +83,6 @@ export class getUsers {
     }
 }
 
-interface UserResponseModel {
-  email: string;
-  password:string;
-}
-
-
-export class userAuthentication {
-  public async getUser(user:UserResponseModel): Promise<Boolean> {
-
-    try{
-      const userRepository= db.getRepository(User)
-      const userExists = await userRepository.findOneBy({email:user.email})
-      //console.log(userExists)
-      if(userExists){
-        const isMatch = await bcrypt.compare(user.password, userExists.password);
-        return isMatch
-      }
-      return false
-    }
-    catch(error:any){
-      console.log(error)
-      throw new Error("Error in getting user:", error);
-    }
-  }
-}
 
 
 /*

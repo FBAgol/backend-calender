@@ -16,14 +16,6 @@ export function errorHandler(
         details: err?.fields,
       });
     }
-
-   
-    if (err instanceof Error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-      });
-    }
-  
     next(err)
   };
 
@@ -35,5 +27,11 @@ export function errorHandler(
         fields: err.fields
       });
     }
+    if (err instanceof Error) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+      });
+    }
+  
     next(err);
   }

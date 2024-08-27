@@ -27,35 +27,26 @@ interface params{
   password:string
 }
 
-  @Route("user")
+  @Route("/user")
    export class UserController extends Controller {
     @SuccessResponse("201", "Created") 
     @Tags("Post-User")
-    @Post("/")
+    @Post("/register")
     public async createUser(
       @Body() userParams: params,
     ): Promise<void | string> {
 
       try {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.(com|de|org|net|[a-zA-Z]{2,})$/;
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]:;"'<>,.?/\\|-]).{8,}$/;
-
-        if(!emailRegex.test(userParams.email) || !passwordRegex.test(userParams.password)){
-          return "Invalid email or password"
-        }else{
-          await new UserService().userLogin(userParams);
-          return createToken(userParams.email, "user")
-        }
+      
+        await new UserService().userRegister(userParams);
+        return createToken(userParams.email, "user")   
         
-    } catch (error) {
-         console.log(error)
-         throw error;
+    } catch (error:any) {
+        // console.log("Database query Error",error)
+         throw error
     }
     }
   }
-
-
-
 
   @Route("secure")
 export class SecureController extends Controller {
@@ -87,10 +78,10 @@ interface checkUserExists{
 @Route("/user")
 export class getUser extends Controller { 
     @Tags("User")
-    @Post("login")
-    public async userLogin( @Body() user:UserResponseModel): Promise<checkUserExists| string> {
+    @Post("/login")
+    public async userLogin( @Body() user:UserResponseModel): Promise<checkUserExists| string |void> {
       try{
-        const userExists = await new userAuthentication().getUser(user)
+        const userExists = await new userAuthentication().getLogIn(user)
         if(userExists){
           const result={token:createToken(user.email, "user"), isUser:userExists}
           return result
@@ -99,7 +90,6 @@ export class getUser extends Controller {
     }
     catch(error:any){
       console.log(error)
-      throw new Error("Error in getting user:", error);
     }
     }
 }
