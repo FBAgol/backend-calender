@@ -95,6 +95,30 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"userUpdateResponse": {
+				"properties": {
+					"newFirstname": {
+						"type": "string"
+					},
+					"newLastname": {
+						"type": "string"
+					},
+					"oldEmail": {
+						"type": "string"
+					},
+					"newEmail": {
+						"type": "string"
+					},
+					"newPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"oldEmail"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -219,6 +243,67 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserResponseModel"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/token": {
+			"get": {
+				"operationId": "UserToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/user/update": {
+			"put": {
+				"operationId": "UpdateUserData",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/userUpdateResponse"
 							}
 						}
 					}

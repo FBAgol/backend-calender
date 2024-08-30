@@ -8,6 +8,10 @@ import { UserController } from './../src/userController/userController';
 import { SecureController } from './../src/userController/userController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { getUser } from './../src/userController/userController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { getUserByToken } from './../src/userController/userController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { userUpdate } from './../src/userController/userController';
 import { expressAuthentication } from './../authentication';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -62,6 +66,18 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "userUpdateResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "newFirstname": {"dataType":"string"},
+            "newLastname": {"dataType":"string"},
+            "oldEmail": {"dataType":"string","required":true},
+            "newEmail": {"dataType":"string"},
+            "newPassword": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -161,6 +177,66 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'userLogin',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/user/token',
+            ...(fetchMiddlewares<RequestHandler>(getUserByToken)),
+            ...(fetchMiddlewares<RequestHandler>(getUserByToken.prototype.userToken)),
+
+            async function getUserByToken_userToken(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    token: {"in":"query","name":"token","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new getUserByToken();
+
+              await templateService.apiHandler({
+                methodName: 'userToken',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/user/update',
+            ...(fetchMiddlewares<RequestHandler>(userUpdate)),
+            ...(fetchMiddlewares<RequestHandler>(userUpdate.prototype.updateUserData)),
+
+            async function userUpdate_updateUserData(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    updateData: {"in":"body","name":"updateData","required":true,"ref":"userUpdateResponse"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new userUpdate();
+
+              await templateService.apiHandler({
+                methodName: 'updateUserData',
                 controller,
                 response,
                 next,

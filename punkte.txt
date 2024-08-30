@@ -21,9 +21,18 @@ typescript: Dies ist der TypeScript-Compiler. TypeScript ist eine strikt typisie
 Todos: 
 
 1- lokal storage token --> erledigt 
-2- componenten url
-3- rolle 
-4- singUp and singin Error style 
-5- clander style 
-6- todo funktion 
-7- pdf 
+2- singUp and singin Error style --> erledigt
+
+
+3- create header with Home(Calender) - Profile- Stimate     
+3- Backend --> Eddit user data --> mit Token got userdata -->  
+3- upload a bild in the profile --> https://dev.to/mirzaleka/upload-the-image-with-a-preview-using-html-css-javascript-53cb
+4- componenten url
+5- rolle 
+6- clander style 
+7- todo funktion --> butoom save for datenbank buttom pdf for import pfd for the whol month
+8- pdf 
+9- add fuction which shows the todoliste of the past days or month
+10- while onmounted hast to be shown the current month and its days
+
+
