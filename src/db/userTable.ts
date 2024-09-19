@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { ToDo } from "./todoTable"
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: string
 
     @Column()
     firstname: string
@@ -18,6 +19,9 @@ export class User {
 
     @Column()
     password: string
+
+    @OneToMany(()=>ToDo, (todos)=>todos.user)
+    toDos: ToDo[]
 
 }
 

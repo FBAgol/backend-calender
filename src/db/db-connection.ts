@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import {User} from './userTable'
+import { ToDo } from "./todoTable"
 
 const db = new DataSource({
     type: "mysql",
@@ -9,9 +10,9 @@ const db = new DataSource({
     username: "farzad",
     password: "mysql",
     database: "calender",
-    entities: [User],
+    entities: [ User, ToDo],
     synchronize: true,
-    logging: false,
+    logging:false,
 })
 
 export default db

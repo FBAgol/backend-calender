@@ -34,8 +34,7 @@
 			"User": {
 				"properties": {
 					"id": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"firstname": {
 						"type": "string"
@@ -48,6 +47,12 @@
 					},
 					"password": {
 						"type": "string"
+					},
+					"toDos": {
+						"items": {
+							"$ref": "#/components/schemas/ToDo"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -55,7 +60,32 @@
 					"firstname",
 					"lastname",
 					"email",
-					"password"
+					"password",
+					"toDos"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ToDo": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"date_time": {
+						"type": "string"
+					},
+					"todo_list": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					}
+				},
+				"required": [
+					"id",
+					"date_time",
+					"todo_list",
+					"user"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -116,6 +146,40 @@
 				},
 				"required": [
 					"oldEmail"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"todoControllerParams": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"todo": {
+						"properties": {
+							"notDone": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"done": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"notDone",
+							"done"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"token",
+					"todo"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -308,6 +372,82 @@
 						}
 					}
 				}
+			}
+		},
+		"/todo/addTodo": {
+			"post": {
+				"operationId": "CreateTodos",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{},
+										{
+											"type": "string"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Post-todo"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/todoControllerParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/getTodo/{date}": {
+			"post": {
+				"operationId": "CreateTodos",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"get-todos"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

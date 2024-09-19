@@ -20,7 +20,7 @@ import {
   import {UserService, getUsers} from '../userService/userService'
   import { createToken } from "../createJWT";
   import { User } from "../db/userTable";
-import { JwtPayload } from "jsonwebtoken";
+  import db from '../db/db-connection';
 
 interface params{
   firstname:string,
@@ -39,9 +39,13 @@ interface params{
     ): Promise<void | string> {
 
       try {
-      
         await new UserService().userRegister(userParams);
-        return createToken(userParams.email, "user")   
+        const finduser= await db.getRepository(User).findOneBy({
+          email: userParams.email
+        })
+        if(finduser){
+          return createToken(finduser?.id, "user")   
+        }  
         
     } catch (error:any) {
         // console.log("Database query Error",error)
@@ -85,7 +89,11 @@ export class getUser extends Controller {
       try{
         const userExists = await new UserService().userLogIn(user)
         if(userExists){
-          const result={token:createToken(user.email, "user"), isUser:userExists}
+          const finduser= await db.getRepository(User).findOneBy({
+            email: user.email
+          })
+        
+          const result={token:createToken(finduser?.id, "user"), isUser:userExists}
           return result
         }
         return "user not found"

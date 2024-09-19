@@ -12,6 +12,10 @@ import { getUser } from './../src/userController/userController';
 import { getUserByToken } from './../src/userController/userController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { userUpdate } from './../src/userController/userController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ToDoController } from './../src/todoController/todoController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ToDoListeController } from './../src/todoController/todoController';
 import { expressAuthentication } from './../authentication';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -36,11 +40,23 @@ const models: TsoaRoute.Models = {
     "User": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"double","required":true},
+            "id": {"dataType":"string","required":true},
             "firstname": {"dataType":"string","required":true},
             "lastname": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
+            "toDos": {"dataType":"array","array":{"dataType":"refObject","ref":"ToDo"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ToDo": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "date_time": {"dataType":"string","required":true},
+            "todo_list": {"dataType":"string","required":true},
+            "user": {"ref":"User","required":true},
         },
         "additionalProperties": false,
     },
@@ -78,6 +94,15 @@ const models: TsoaRoute.Models = {
             "oldEmail": {"dataType":"string","required":true},
             "newEmail": {"dataType":"string"},
             "newPassword": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "todoControllerParams": {
+        "dataType": "refObject",
+        "properties": {
+            "token": {"dataType":"string","required":true},
+            "todo": {"dataType":"nestedObjectLiteral","nestedProperties":{"notDone":{"dataType":"array","array":{"dataType":"string"},"required":true},"done":{"dataType":"array","array":{"dataType":"string"},"required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -242,6 +267,67 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/todo/addTodo',
+            ...(fetchMiddlewares<RequestHandler>(ToDoController)),
+            ...(fetchMiddlewares<RequestHandler>(ToDoController.prototype.createTodos)),
+
+            async function ToDoController_createTodos(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    toDos: {"in":"body","name":"toDos","required":true,"ref":"todoControllerParams"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new ToDoController();
+
+              await templateService.apiHandler({
+                methodName: 'createTodos',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/getTodo/:date',
+            ...(fetchMiddlewares<RequestHandler>(ToDoListeController)),
+            ...(fetchMiddlewares<RequestHandler>(ToDoListeController.prototype.createTodos)),
+
+            async function ToDoListeController_createTodos(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    token: {"in":"query","name":"token","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new ToDoListeController();
+
+              await templateService.apiHandler({
+                methodName: 'createTodos',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
               });
             } catch (err) {
                 return next(err);
