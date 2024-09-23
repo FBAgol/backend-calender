@@ -13,7 +13,8 @@ export interface getTodoControllerResponse{
     date:string
 }
 export interface todoServiceParams{
-    userId:string
+    userId:string,
+    date:string,
     todo: {
         done: string[]
         notDone : string[]
@@ -23,4 +24,22 @@ export interface todoServiceParams{
 export interface getTodoServiceResponse{
     userId:string
     date:string
+}
+
+export interface updateTodosServiceResponse{ 
+    userId:string
+    date:string
+    todo: {
+        done: string[]
+        notDone : string[]
+    }
+    
+}
+
+export interface updateTodosControllerParams{ 
+    todo: {
+        done: string[]
+        notDone : string[]
+    }
+
 }

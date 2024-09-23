@@ -183,6 +183,36 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"updateTodosControllerParams": {
+				"properties": {
+					"todo": {
+						"properties": {
+							"notDone": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"done": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"notDone",
+							"done"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"todo"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -374,7 +404,7 @@
 				}
 			}
 		},
-		"/todo/addTodo": {
+		"/todo/addTodo/{date}": {
 			"post": {
 				"operationId": "CreateTodos",
 				"responses": {
@@ -398,7 +428,16 @@
 					"Post-todo"
 				],
 				"security": [],
-				"parameters": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -412,8 +451,8 @@
 			}
 		},
 		"/getTodo/{date}": {
-			"post": {
-				"operationId": "CreateTodos",
+			"get": {
+				"operationId": "RecieveTodos",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -438,10 +477,72 @@
 						"schema": {
 							"type": "string"
 						}
-					},
+					}
+				]
+			}
+		},
+		"/update/{date}": {
+			"patch": {
+				"operationId": "UpdateTodoList",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"update-todos"
+				],
+				"security": [],
+				"parameters": [
 					{
-						"in": "query",
-						"name": "token",
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/updateTodosControllerParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/monthtodos/{date}": {
+			"get": {
+				"operationId": "RecieveMonthTodos",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"get-Monthtodos"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
 						"required": true,
 						"schema": {
 							"type": "string"
